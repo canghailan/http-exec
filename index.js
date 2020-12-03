@@ -3,11 +3,15 @@ const url = require('url');
 const querystring = require('querystring');
 const { spawn } = require('child_process');
 
+function csv_to_set(csv) {
+    return csv ? new Set(csv.split(',')) : undefined;
+}
+
 const CHARSET = process.env['CHARSET'];
-const COMMAND = process.env['COMMAND'] ? new Set(process.env['COMMAND'].split(',')) : undefined;
+const COMMAND = csv_to_set(process.env['COMMAND']);
 const PATH = process.env['PATH'];
 const PORT = process.env['PORT'] || 3000;
-const TOKEN = process.env['TOKEN'] ? new Set(process.env['TOKEN'].split(',')) : undefined;
+const TOKEN = csv_to_set(process.env['TOKEN']);
 
 function check_command(command, commands = COMMAND) {
     return commands ? commands.has(command) : true;
