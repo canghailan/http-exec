@@ -54,7 +54,7 @@ function http_exec(req, res) {
 }
 
 function token_authorization(next, options) {
-    if (options && options.otken) {
+    if (options && options.token) {
         return (req, res) => {
             let authorization = req.headers['authorization'];
             let token = parse_token(authorization);
