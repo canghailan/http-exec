@@ -1,0 +1,11 @@
+{
+  "name": "http-exec",
+  "version": "1.0.0",
+  "description": "exec executable by http",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "author": "hao.hu",
+  "license": "MIT"
+}
