@@ -9,7 +9,6 @@ function csv_to_set(csv) {
 
 const CHARSET = process.env['CHARSET'];
 const COMMAND = csv_to_set(process.env['COMMAND']);
-const PATH = process.env['PATH'];
 const PORT = process.env['PORT'] || 3000;
 const TOKEN = csv_to_set(process.env['TOKEN']);
 
@@ -36,9 +35,9 @@ function http_exec(req, res) {
     let command = pathname.slice(1);
     let args = querystring.unescape(query);
     let options = {
-        env: { PATH },
         shell: process.platform === 'win32'
     };
+    let t0 = Date.now();
     let p = args ?
         spawn(`${command} ${args}`, { ...options, shell: true }) :
         spawn(command, options);
@@ -50,6 +49,8 @@ function http_exec(req, res) {
         res.write(e.message);
     });
     p.on('exit', () => {
+        let t = Date.now() - t0;
+        console.log(args ? `${t}ms\t${command} ${args}` : `${t}ms\t${command}`)
         res.end();
     });
     p.stdout.pipe(res);
@@ -107,6 +108,7 @@ function server(options) {
     }
     let server = http.createServer(handler);
     server.listen(o.port);
+    console.log(`listen: ${o.port}`);
     return server;
 }
 
